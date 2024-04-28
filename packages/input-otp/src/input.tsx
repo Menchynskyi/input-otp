@@ -6,7 +6,6 @@ import { REGEXP_ONLY_DIGITS } from './regexp'
 import { syncTimeouts } from './sync-timeouts'
 import { OTPInputProps, RenderProps } from './types'
 import { usePrevious } from './use-previous'
-import { usePasswordManagerBadge } from './use-pwm-badge'
 
 export const OTPInputContext = React.createContext<RenderProps>(
   {} as RenderProps,
@@ -22,7 +21,6 @@ export const OTPInput = React.forwardRef<HTMLInputElement, OTPInputProps>(
       pattern = REGEXP_ONLY_DIGITS,
       inputMode = 'numeric',
       onComplete,
-      pushPasswordManagerStrategy = 'increase-width',
       containerClassName,
       noScriptCSSFallback = NOSCRIPT_CSS_FALLBACK,
 
@@ -267,13 +265,6 @@ export const OTPInput = React.forwardRef<HTMLInputElement, OTPInputProps>(
       }
     }, [maxLength, onComplete, previousValue, value])
 
-    const pwmb = usePasswordManagerBadge({
-      containerRef,
-      inputRef,
-      pushPasswordManagerStrategy,
-      isFocused,
-    })
-
     /** Event handlers */
     const _changeListener = React.useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -360,12 +351,7 @@ export const OTPInput = React.forwardRef<HTMLInputElement, OTPInputProps>(
       () => ({
         position: 'absolute',
         inset: 0,
-        width: pwmb.willPushPWMBadge
-          ? `calc(100% + ${pwmb.PWM_BADGE_SPACE_WIDTH})`
-          : '100%',
-        clipPath: pwmb.willPushPWMBadge
-          ? `inset(0 ${pwmb.PWM_BADGE_SPACE_WIDTH} 0 0)`
-          : undefined,
+        width: '100%',
         height: '100%',
         display: 'flex',
         textAlign,
@@ -398,14 +384,13 @@ export const OTPInput = React.forwardRef<HTMLInputElement, OTPInputProps>(
         // fontSize: 'unset',
         // paddingInline: '.5rem',
       }),
-      [pwmb.PWM_BADGE_SPACE_WIDTH, pwmb.willPushPWMBadge, textAlign],
+      [textAlign],
     )
 
     /** Rendering */
     const renderedInput = React.useMemo(
       () => (
         <input
-          autoComplete={props.autoComplete || 'one-time-code'}
           {...props}
           data-input-otp
           data-input-otp-mss={mirrorSelectionStart}

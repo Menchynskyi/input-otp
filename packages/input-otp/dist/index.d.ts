@@ -17,7 +17,6 @@ type OTPInputBaseProps = OverrideProps<React.InputHTMLAttributes<HTMLInputElemen
     maxLength: number;
     textAlign?: 'left' | 'center' | 'right';
     onComplete?: (...args: any[]) => unknown;
-    pushPasswordManagerStrategy?: 'increase-width' | 'none';
     containerClassName?: string;
     noScriptCSSFallback?: string | null;
 }>;

@@ -20,7 +20,6 @@ type OTPInputBaseProps = OverrideProps<
     textAlign?: 'left' | 'center' | 'right'
 
     onComplete?: (...args: any[]) => unknown
-    pushPasswordManagerStrategy?: 'increase-width' | 'none'
 
     containerClassName?: string
 
